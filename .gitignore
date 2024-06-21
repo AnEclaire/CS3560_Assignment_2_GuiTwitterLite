@@ -1,0 +1,5 @@
+# Java executables
+*.class
+
+# Temp dir
+temp/
