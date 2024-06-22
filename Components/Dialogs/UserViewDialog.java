@@ -31,7 +31,7 @@ public class UserViewDialog extends JDialog {
         // Initialize followingListModel with existing followed users' names
         for (User followedUser : user.getFollowing().values()) {
             followingUsers.add(followedUser);
-            followingListModel.addElement(followedUser.getName()); // Add name instead of ID
+            followingListModel.addElement(followedUser.getName());
         }
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -54,7 +54,6 @@ public class UserViewDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String userIdInput = userIdTextArea.getText().trim();
-                // Simulate adding the user to followed users list (replace with actual logic)
                 try {
                     UUID uuid = UUID.fromString(userIdInput);
                     User followedUser = users.get(uuid);
@@ -92,7 +91,7 @@ public class UserViewDialog extends JDialog {
         gbc.gridwidth = 3;
         add(currentlyFollowingLabel, gbc);
 
-        // List of users this user follows (displays names)
+        // List of users this user follows
         JList<String> followingList = new JList<>(followingListModel);
         JScrollPane followingScrollPane = new JScrollPane(followingList);
         gbc.gridx = 0;
@@ -102,16 +101,15 @@ public class UserViewDialog extends JDialog {
         gbc.gridwidth = 3;
         add(followingScrollPane, gbc);
 
-        // Text area for inputting a message (for future functionality)
+        // Input Text Area Box
         JTextArea messageTextArea = new JTextArea();
         gbc.gridx = 0;
         gbc.gridy = 3;
-        gbc.weightx = 0.7;
+        gbc.weightx = 1;
         gbc.weighty = 0.05;
         gbc.gridwidth = 2;
         add(messageTextArea, gbc);
 
-        // Post Message Button (for future functionality)
         // Post Message Button
         JButton postMessageButton = new JButton("Post");
         postMessageButton.addActionListener(new ActionListener() {
@@ -134,7 +132,7 @@ public class UserViewDialog extends JDialog {
         gbc.gridwidth = 1;
         add(postMessageButton, gbc);
 
-        // News Feed Title (for future functionality)
+        // News Feed Title
         JLabel newsFeedLabel = new JLabel("News Feed");
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -143,7 +141,7 @@ public class UserViewDialog extends JDialog {
         gbc.gridwidth = 3;
         add(newsFeedLabel, gbc);
 
-        // Newsfeed list (for future functionality)
+        // Newsfeed list 
         JList<String> newsFeedList = new JList<>(newsFeedListModel);
         JScrollPane newsFeedScrollPane = new JScrollPane(newsFeedList);
         gbc.gridx = 0;
@@ -156,6 +154,10 @@ public class UserViewDialog extends JDialog {
         updateNewsFeed();
     }
     
+    /**
+     * Populates newsfeed with personal posts then followed users posts. Does not currently
+     * keep track of post times/sort them as such.
+     */
     private void updateNewsFeed() {
         newsFeedListModel.clear();
         // Add user's own posts
