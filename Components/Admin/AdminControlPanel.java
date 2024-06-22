@@ -274,7 +274,7 @@ public class AdminControlPanel {
         addGroupButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                showMessageTotalDialog();
+                addGroupListener();
             }
         });
 
