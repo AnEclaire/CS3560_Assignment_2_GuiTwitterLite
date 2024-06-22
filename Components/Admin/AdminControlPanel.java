@@ -12,8 +12,10 @@ import Components.Util.CustomTreeCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Pattern;
 import java.util.HashMap;
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
@@ -286,6 +288,14 @@ public class AdminControlPanel {
             }
         });
 
+        // Show Positive Percentage Listener
+        showPositivePercentageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showPositivePercentageDialog();
+            }
+        });
+
         return rightPanel;
     }
 
@@ -390,6 +400,25 @@ public class AdminControlPanel {
         return count;
     }
 
+    private double calculatePositivePercentage() {
+        String[] positiveWords = {"Haha", "lol", "pog", "love", "like", "amazing", "good"};
+        Pattern positivePattern = Pattern.compile(String.join("|", positiveWords), Pattern.CASE_INSENSITIVE);
+
+        int totalMessages = 0;
+        int positiveMessages = 0;
+
+        for (User user : users.values()) {
+            for (String message : user.getNewsFeed()) {
+                totalMessages++;
+                if (positivePattern.matcher(message).find()) {
+                    positiveMessages++;
+                }
+            }
+        }
+
+        return totalMessages == 0 ? 0 : (double) positiveMessages / totalMessages * 100;
+    }
+
     /**
      * 
      */
@@ -411,6 +440,14 @@ public class AdminControlPanel {
     private void showMessageTotalDialog() {
         String message = "Total Messages: " + countNewsFeedItems();
         CountDisplayDialog dialog = new CountDisplayDialog(frame, "Message Total", message);
+        dialog.setVisible(true);
+    }
+
+    private void showPositivePercentageDialog() {
+        double total = calculatePositivePercentage();
+        String str = new DecimalFormat("#.0#").format(total);
+        CountDisplayDialog dialog = new CountDisplayDialog(frame,
+         "Message Positive Percentage", "Positive Percentage: " + Double.toString(total) + "%");
         dialog.setVisible(true);
     }
 }
