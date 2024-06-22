@@ -1,14 +1,5 @@
 package Components.Admin;
 
-import Components.Dialogs.AddGroupDialog;
-import Components.Dialogs.AddUserDialog;
-import Components.Dialogs.CountDisplayDialog;
-import Components.Dialogs.UserViewDialog;
-import Components.User.User;
-import Components.Dialogs.CountDisplayDialog;
-import Components.User.UserGroup;
-import Components.Util.CustomTreeCellRenderer;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,6 +13,14 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+
+import Components.Dialogs.AddGroupDialog;
+import Components.Dialogs.AddUserDialog;
+import Components.Dialogs.CountDisplayDialog;
+import Components.Dialogs.UserViewDialog;
+import Components.User.User;
+import Components.User.UserGroup;
+import Components.Util.CustomTreeCellRenderer;
 
 public class AdminControlPanel {
 
@@ -38,7 +37,6 @@ public class AdminControlPanel {
     private DefaultMutableTreeNode root;
     private JButton openUserViewButton;
     private Map<UUID, User> users;
-    private UserViewDialog currentDialog;
 
     /**
      * 
@@ -48,9 +46,7 @@ public class AdminControlPanel {
         totalGroups = 1;
         users = new HashMap<>();
         // Ensure GUI creation on the Event Dispatch Thread
-        SwingUtilities.invokeLater(() -> {
-            createAndShowGui();
-        });
+        SwingUtilities.invokeLater(() -> createAndShowGui());
     }
 
     // ------------------------------ LEFT SIDE PANEL/INIT DEFAULTS ------------------------------ //
@@ -116,27 +112,21 @@ public class AdminControlPanel {
                     groupIdTextArea.setText("Group ID: N/A");
                     openUserViewButton.setEnabled(true);
         
-                    // Handle opening UserViewDialog
-                    openUserViewButton.addActionListener(e1 -> {
-                        // Check if there's already a dialog open and close it if needed
-                        if (currentDialog != null && currentDialog.isVisible()) {
-                            currentDialog.dispose();
+                    for (ActionListener al : openUserViewButton.getActionListeners()) {
+                        openUserViewButton.removeActionListener(al);
+                    }
+
+                    openUserViewButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            new UserViewDialog(frame, user, users).setVisible(true);
                         }
-        
-                        // Create new UserViewDialog instance
-                        currentDialog = new UserViewDialog(frame, user, users);
-                        currentDialog.setVisible(true);
                     });
                 } else if(nodeInfo instanceof UserGroup) {
                     UserGroup group = (UserGroup) nodeInfo;
                     groupIdTextArea.setText("Group ID: " + group.getId());
                     userIdTextArea.setText("User ID: N/A");
                     openUserViewButton.setEnabled(false);
-        
-                    // Close current dialog if group is selected (if needed)
-                    if (currentDialog != null && currentDialog.isVisible()) {
-                        currentDialog.dispose();
-                    }
                 }
             }
         });

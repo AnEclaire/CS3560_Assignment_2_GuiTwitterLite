@@ -112,6 +112,9 @@ public class UserViewDialog extends JDialog {
 
         // Post Message Button
         JButton postMessageButton = new JButton("Post");
+        for(ActionListener al : postMessageButton.getActionListeners()) {
+            postMessageButton.removeActionListener(al);
+        }
         postMessageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

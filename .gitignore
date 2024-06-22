@@ -1,5 +1,9 @@
 # Java executables
 *.class
+*.jar
 
 # Temp dir
 temp/
+
+# Build dir
+/build
