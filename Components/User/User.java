@@ -105,6 +105,22 @@ public class User implements Identifiable {
     public String getName() {
         return this.name;
     }
+
+    public Map<UUID, User> getFollowing() {
+        return following;
+    }
+
+    public Map<UUID, User> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowing(Map<UUID, User> following) {
+        this.following = following;
+    }
+
+    public void setFollowers(Map<UUID, User> followers) {
+        this.followers = followers;
+    }
     
     @Override
     public String toString(){
