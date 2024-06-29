@@ -7,3 +7,6 @@ temp/
 
 # Build dir
 /build
+
+# MISC
+.DS_Store

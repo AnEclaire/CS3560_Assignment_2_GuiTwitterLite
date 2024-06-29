@@ -8,4 +8,7 @@ interface Identifiable {
     void setInGroup(boolean inGroup);
     boolean getInGroup();
     String getName();
+    long getCreatedTime();
+    long getUpdatedTime();
+    void setUpdatedTime();
 }

@@ -8,6 +8,8 @@ public class UserGroup implements Identifiable {
 
     private final UUID gId;
     private final String name;
+    private final long creationTime;
+    private long lastUpdatedTime;
     private boolean inGroup;
     private Map<UUID, User> users;
     private Map<String, UserGroup> userGroups;
@@ -17,6 +19,8 @@ public class UserGroup implements Identifiable {
         this.gId = generateId();
         this.users = new HashMap<>();
         this.userGroups = new HashMap<>();
+        this.creationTime = System.currentTimeMillis();
+        this.lastUpdatedTime = System.currentTimeMillis();
     }
 
     /**
@@ -41,6 +45,7 @@ public class UserGroup implements Identifiable {
         if(users.containsKey(user.getId())) {
             return false;
         }
+        setUpdatedTime();
         users.put(user.getId(), user);
         return true;
     }
@@ -54,6 +59,7 @@ public class UserGroup implements Identifiable {
         if(userGroups.containsKey(userGroup.getName())) {
             return false;
         }
+        setUpdatedTime();
         userGroups.put(userGroup.getName(), userGroup);
         return true;
     }
@@ -67,6 +73,7 @@ public class UserGroup implements Identifiable {
     }
 
     public void setInGroup(boolean inGroup) {
+        setUpdatedTime();
         this.inGroup = inGroup;
     }
 
@@ -85,5 +92,17 @@ public class UserGroup implements Identifiable {
 
     public Map<UUID, User> getUsers() {
         return this.users;
+    }
+
+    public void setUpdatedTime() {
+        this.lastUpdatedTime = System.currentTimeMillis();
+    }
+
+    public long getUpdatedTime() {
+        return this.lastUpdatedTime;
+    }
+
+    public long getCreatedTime() {
+        return this.creationTime;
     }
 }

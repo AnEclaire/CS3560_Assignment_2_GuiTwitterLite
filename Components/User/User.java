@@ -13,6 +13,8 @@ import java.util.UUID;
 public class User implements Identifiable {
     private final UUID id;
     private final String name;
+    private final long creationTime;
+    private long lastUpdatedTime;
     private boolean inGroup;
     private Map<UUID, User> followers;
     private Map<UUID, User> following;
@@ -28,6 +30,8 @@ public class User implements Identifiable {
         this.followers = new HashMap<>();
         this.following = new HashMap<>();
         this.newsFeed = new ArrayList<>();
+        this.creationTime = System.currentTimeMillis();
+        this.lastUpdatedTime = System.currentTimeMillis();
     }
 
     /**
@@ -65,6 +69,7 @@ public class User implements Identifiable {
      * @param post Passed in string representation of a post.
      */
     public void addPost(String post) {
+        setUpdatedTime();
         newsFeed.add(post);
     }  
     
@@ -125,5 +130,17 @@ public class User implements Identifiable {
     @Override
     public String toString(){
         return this.name;
+    }
+
+    public void setUpdatedTime() {
+        this.lastUpdatedTime = System.currentTimeMillis();
+    }
+
+    public long getUpdatedTime() {
+        return this.lastUpdatedTime;
+    }
+
+    public long getCreatedTime() {
+        return this.creationTime;
     }
 }
